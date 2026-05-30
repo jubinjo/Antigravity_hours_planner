@@ -1506,3 +1506,26 @@ h1, h2, h3, h4 {
   text-transform: uppercase;
 }
 
+.btn-apply {
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-apply.glowing {
+  background: linear-gradient(135deg, var(--teaching-primary) 0%, var(--research-primary) 100%);
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: 0 0 12px var(--teaching-glow), 0 0 20px var(--research-glow);
+  animation: pulseGlow 1.5s infinite alternate ease-in-out;
+  transform: translateY(-2px);
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 8px var(--teaching-glow), 0 0 12px rgba(255, 66, 3, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 16px var(--teaching-glow), 0 0 28px rgba(255, 66, 3, 0.65);
+  }
+}
+

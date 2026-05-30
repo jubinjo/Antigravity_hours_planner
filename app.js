@@ -112,7 +112,8 @@ const TRANSLATIONS = {
     total_global_alloc: "Total global allocation",
     monthly_slice: "Monthly slice",
     footer_mention: "Developed by Jonathan Jubin in collaboration with Antigravity. This tool is available free of charge: you may use and modify it as you see fit. It is provided ‘as is’, without warranty. The author accepts no liability for the accuracy of the calculations or the use made of them, nor any other issue related to this tool.",
-    footer_last_edit: "Version of May 30, 2026, 1:54 PM"
+    footer_last_edit: "Version of May 30, 2026, 2:42 PM",
+    apply_settings: "Apply parameters changes"
   },
   fr: {
     app_title: "AetherHours",
@@ -221,7 +222,8 @@ const TRANSLATIONS = {
     total_global_alloc: "Allocation globale",
     monthly_slice: "Tranche mensuelle",
     footer_mention: "Développé par Jonathan Jubin en collaboration avec Antigravity. Cet outil est disponible gratuitement : vous pouvez l'utiliser et le modifier comme bon vous semble. Il est fourni « tel quel », sans aucune garantie. L'auteur décline toute responsabilité quant à l'exactitude des calculs ou à l'usage qui en est fait, ainsi qu'à tout autre problème lié à cet outil.",
-    footer_last_edit: "Version du 30 mai 2026 à 13:54"
+    footer_last_edit: "Version du 30 mai 2026 à 14:42",
+    apply_settings: "Appliquer les modifications de paramètres"
   }
 };
 
@@ -1254,7 +1256,10 @@ window.duplicateEntry = duplicateEntry;
 // 6. SETTINGS MANAGEMENT
 // ==========================================
 
-function updateSettingsFromUI() {
+function checkSettingsForChanges() {
+  const btn = document.getElementById("applySettingsBtn");
+  if (!btn) return;
+
   const targetInput = document.getElementById("settingTarget");
   const apsInput = document.getElementById("settingAPS");
   const baInput = document.getElementById("settingBA");
@@ -1267,7 +1272,33 @@ function updateSettingsFromUI() {
   const baVal = Number(baInput.value);
   const pgVal = Number(pgInput.value);
 
-  // Live validation: only update state if values are valid numbers
+  const hasChanges = 
+    targetVal !== state.settings.target ||
+    apsVal !== state.settings.aps ||
+    baVal !== state.settings.ba ||
+    pgVal !== state.settings.pg;
+
+  if (hasChanges) {
+    btn.classList.add("glowing");
+  } else {
+    btn.classList.remove("glowing");
+  }
+}
+
+function applySettingsChanges() {
+  const targetInput = document.getElementById("settingTarget");
+  const apsInput = document.getElementById("settingAPS");
+  const baInput = document.getElementById("settingBA");
+  const pgInput = document.getElementById("settingPG");
+
+  if (!targetInput || !apsInput || !baInput || !pgInput) return;
+
+  const targetVal = Number(targetInput.value);
+  const apsVal = Number(apsInput.value);
+  const baVal = Number(baInput.value);
+  const pgVal = Number(pgInput.value);
+
+  // Validate values before saving to avoid corruption
   if (!isNaN(targetVal) && targetVal > 0) {
     state.settings.target = targetVal;
   }
@@ -1285,6 +1316,13 @@ function updateSettingsFromUI() {
   updateDashboardMetrics();
   renderSVGChart();
   renderEntriesList();
+  translatePage(); // Updates UI strings like monthly capacities that depend on target hours
+
+  // Remove the glow
+  const btn = document.getElementById("applySettingsBtn");
+  if (btn) {
+    btn.classList.remove("glowing");
+  }
 }
 
 // ==========================================
@@ -1349,6 +1387,8 @@ function handleJSONImport(file) {
       document.getElementById("academicYearSelect").value = state.selectedYear;
       document.getElementById("languageSelect").value = state.settings.language;
       document.getElementById("themeSelect").value = state.settings.theme;
+      
+      checkSettingsForChanges();
 
       document.getElementById("importModal").classList.add("hide");
       errorToast.classList.add("hide");
@@ -1433,6 +1473,8 @@ function setupResetWorkflow() {
       document.getElementById("settingPG").value = 1.2;
       document.getElementById("languageSelect").value = "fr";
       document.getElementById("themeSelect").value = "light";
+      
+      checkSettingsForChanges();
       
       closeResetModal();
 
@@ -1573,9 +1615,14 @@ document.addEventListener("DOMContentLoaded", () => {
   configInputs.forEach(id => {
     const el = document.getElementById(id);
     if (el) {
-      el.addEventListener("input", updateSettingsFromUI);
+      el.addEventListener("input", checkSettingsForChanges);
     }
   });
+
+  const applyBtn = document.getElementById("applySettingsBtn");
+  if (applyBtn) {
+    applyBtn.addEventListener("click", applySettingsChanges);
+  }
 
   // Tab Filtering handlers
   const tabBtns = document.querySelectorAll(".tab-btn");
