@@ -112,7 +112,7 @@ const TRANSLATIONS = {
     total_global_alloc: "Total global allocation",
     monthly_slice: "Monthly slice",
     footer_mention: "Developed by Jonathan Jubin in collaboration with Antigravity. This tool is available free of charge: you may use and modify it as you see fit. It is provided ‘as is’, without warranty. The author accepts no liability for the accuracy of the calculations or the use made of them, nor any other issue related to this tool.",
-    footer_last_edit: "Version of May 30, 2026, 2:42 PM",
+    footer_last_edit: "Version of May 30, 2026, 2:59 PM",
     apply_settings: "Apply parameters changes"
   },
   fr: {
@@ -222,7 +222,7 @@ const TRANSLATIONS = {
     total_global_alloc: "Allocation globale",
     monthly_slice: "Tranche mensuelle",
     footer_mention: "Développé par Jonathan Jubin en collaboration avec Antigravity. Cet outil est disponible gratuitement : vous pouvez l'utiliser et le modifier comme bon vous semble. Il est fourni « tel quel », sans aucune garantie. L'auteur décline toute responsabilité quant à l'exactitude des calculs ou à l'usage qui en est fait, ainsi qu'à tout autre problème lié à cet outil.",
-    footer_last_edit: "Version du 30 mai 2026 à 14:42",
+    footer_last_edit: "Version du 30 mai 2026 à 14:59",
     apply_settings: "Appliquer les modifications de paramètres"
   }
 };
@@ -1361,7 +1361,53 @@ function handleJSONImport(file) {
         throw new Error("Invalid structure: 'entries' array missing");
       }
 
-      state.entries = importedData.entries;
+      // Enforce strict sanitization and validation of fields to prevent DOM-XSS vectors
+      const sanitizedEntries = [];
+      const validTypes = ["course", "research", "other"];
+      const validPrograms = ["APS", "BA", "PG"];
+      const dateRegex = /^\d{4}-\d{2}$/;
+      const idRegex = /^[a-zA-Z0-9_-]+$/;
+
+      for (const entry of importedData.entries) {
+        // ID sanitization (alphanumeric, hyphens, underscores only)
+        if (!entry.id || !idRegex.test(String(entry.id))) continue;
+        // Category verification
+        if (!entry.type || !validTypes.includes(String(entry.type))) continue;
+        // Text escaping checks
+        if (typeof entry.name !== "string") continue;
+
+        const sanitized = {
+          id: String(entry.id),
+          type: String(entry.type),
+          name: entry.name.trim(),
+          dateType: entry.dateType === "fixed" ? "fixed" : "duration"
+        };
+
+        if (entry.type === "course") {
+          sanitized.program = validPrograms.includes(String(entry.program)) ? String(entry.program) : "BA";
+          sanitized.annualHours = Math.max(0.1, Number(entry.annualHours) || 0);
+        } else {
+          sanitized.totalHours = Math.max(0.1, Number(entry.totalHours) || 0);
+        }
+
+        // Period Date validations
+        if (entry.startDate && dateRegex.test(String(entry.startDate))) {
+          sanitized.startDate = String(entry.startDate);
+        } else {
+          continue; // Malformed date, skip
+        }
+
+        if (entry.endDate && dateRegex.test(String(entry.endDate))) {
+          sanitized.endDate = String(entry.endDate);
+        } else {
+          sanitized.endDate = sanitized.startDate;
+        }
+
+        sanitizedEntries.push(sanitized);
+      }
+
+      state.entries = sanitizedEntries;
+
       if (importedData.settings) {
         state.settings = {
           target: Number(importedData.settings.target) || 1868,
@@ -1374,7 +1420,7 @@ function handleJSONImport(file) {
       }
       
       if (importedData.selectedYear) {
-        state.selectedYear = importedData.selectedYear;
+        state.selectedYear = String(importedData.selectedYear).replace(/[^0-9-]/g, "");
       }
 
       saveStateToLocalStorage();
