@@ -112,7 +112,7 @@ const TRANSLATIONS = {
     total_global_alloc: "Total global allocation",
     monthly_slice: "Monthly slice",
     footer_mention: "Developed by Jonathan Jubin in collaboration with Antigravity. This tool is available free of charge: you may use and modify it as you see fit. It is provided ‘as is’, without warranty. The author accepts no liability for the accuracy of the calculations or the use made of them, nor any other issue related to this tool.",
-    footer_last_edit: "Version of May 30, 2026, 3:14 PM",
+    footer_last_edit: "Version of May 30, 2026, 3:19 PM",
     apply_settings: "Apply parameters changes"
   },
   fr: {
@@ -222,7 +222,7 @@ const TRANSLATIONS = {
     total_global_alloc: "Allocation globale",
     monthly_slice: "Tranche mensuelle",
     footer_mention: "Développé par Jonathan Jubin en collaboration avec Antigravity. Cet outil est disponible gratuitement : vous pouvez l'utiliser et le modifier comme bon vous semble. Il est fourni « tel quel », sans aucune garantie. L'auteur décline toute responsabilité quant à l'exactitude des calculs ou à l'usage qui en est fait, ainsi qu'à tout autre problème lié à cet outil.",
-    footer_last_edit: "Version du 30 mai 2026 à 15:14",
+    footer_last_edit: "Version du 30 mai 2026 à 15:19",
     apply_settings: "Appliquer les modifications de paramètres"
   }
 };

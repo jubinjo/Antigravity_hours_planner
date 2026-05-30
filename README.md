@@ -21,21 +21,13 @@ Built with a stunning glassmorphic interface, AetherHours operates in a **zero-t
 
 ## Quick Start Guide
 
-AetherHours is built entirely as a static web application consisting of pure HTML5, vanilla CSS, and modern JavaScript. There are **no build systems, dependencies, or server installations required**.
+AetherHours is hosted and deployed as a zero-dependency static application. You can use the tool instantly in any modern desktop or mobile web browser.
 
-### Running Locally
+### Direct Access (Recommended)
+Simply navigate to the official web deployment:
+👉 **[AetherHours Web App](https://jubinjo.github.io/Antigravity_hours_planner/)**
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/Antigravity_hours_planner.git
-   ```
-2. **Launch the app**:
-   - Double-click the `index.html` file in your file explorer to open it instantly in any modern web browser (Chrome, Firefox, Safari, Edge).
-   - Alternatively, serve it via any simple local web server (e.g., Python's built-in server):
-     ```bash
-     python -m http.server 8000
-     ```
-     Then navigate to `http://localhost:8000` in your web browser.
+*(Since all calculations and user schedules remain strictly inside your browser's private local storage, using the online GitHub Pages deployment guarantees 100% of your data remains local, secure, and under your control, with zero data transmitted to any external server.)*
 
 ### Initial Configuration
 1. Head over to the **Configuration & Paramètres** sidebar.
@@ -55,11 +47,11 @@ All planning is saved in your browser's `localStorage` automatically.
 
 ## Reporting Bugs & Requesting Features
 
-AetherHours is open-source. If you encounter incorrect calculations, display bugs, or want to suggest new features, please submit a bug report via GitHub Issues.
+If you encounter incorrect calculations, layout display issues, or wish to suggest new features, please submit a report directly via the public GitHub repository tracker.
 
 ### How to File a Bug Report
 
-1. Navigate to the [GitHub Issues](https://github.com/yourusername/Antigravity_hours_planner/issues) page of this repository.
+1. Navigate to the [GitHub Issues](https://github.com/jubinjo/Antigravity_hours_planner/issues) page.
 2. Click the green **New Issue** button.
 3. Use the following structured template to help resolve the issue quickly:
 
