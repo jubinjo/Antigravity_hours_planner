@@ -113,7 +113,9 @@ const TRANSLATIONS = {
     monthly_slice: "Monthly slice",
     footer_mention: "Developed by Jonathan Jubin in collaboration with Antigravity. This tool is available free of charge: you may use and modify it as you see fit. It is provided ‘as is’, without warranty. The author accepts no liability for the accuracy of the calculations or the use made of them, nor any other issue related to this tool.",
     footer_last_edit: "Version of May 30, 2026, 3:19 PM",
-    apply_settings: "Apply parameters changes"
+    apply_settings: "Apply parameters changes",
+    help_title: "Help & Tips",
+    help_btn: "Help"
   },
   fr: {
     app_title: "AetherHours",
@@ -223,7 +225,9 @@ const TRANSLATIONS = {
     monthly_slice: "Tranche mensuelle",
     footer_mention: "Développé par Jonathan Jubin en collaboration avec Antigravity. Cet outil est disponible gratuitement : vous pouvez l'utiliser et le modifier comme bon vous semble. Il est fourni « tel quel », sans aucune garantie. L'auteur décline toute responsabilité quant à l'exactitude des calculs ou à l'usage qui en est fait, ainsi qu'à tout autre problème lié à cet outil.",
     footer_last_edit: "Version du 30 mai 2026 à 15:19",
-    apply_settings: "Appliquer les modifications de paramètres"
+    apply_settings: "Appliquer les modifications de paramètres",
+    help_title: "Aide & Conseils",
+    help_btn: "Aide"
   }
 };
 
@@ -363,6 +367,60 @@ function translatePage() {
     const key = el.getAttribute("data-i18n-placeholder");
     el.setAttribute("placeholder", getTranslation(key));
   });
+}
+
+function renderHelpContent() {
+  const helpContent = document.getElementById("helpContent");
+  if (!helpContent) return;
+
+  const lang = state.settings.language || "fr";
+  if (lang === "en") {
+    helpContent.innerHTML = `
+      <div class="help-section">
+        <h3>🎯 Annual Target</h3>
+        <p>Set your target annual hours (e.g., 1868h) in the <strong>Configuration & Settings</strong> section. This serves as the 100% capacity reference for your charts.</p>
+      </div>
+      <div class="help-section">
+        <h3>📚 Preparation Multipliers</h3>
+        <p>Teaching courses automatically multiply your raw hours depending on the program level (APS, BA, PG) to account for preparation and grading overhead.</p>
+      </div>
+      <div class="help-section">
+        <h3>➕ Adding Activities</h3>
+        <p>Click <strong>Add Entry</strong> under "Planned Entries" to add teaching courses, research projects, or other tasks, and specify their active duration.</p>
+      </div>
+      <div class="help-section">
+        <h3>📊 Interactive Chart</h3>
+        <p>Hover over the columns of the monthly chart to view a detailed breakdown of your workload and identify months with capacity overload (marked with a <strong>!</strong> alert).</p>
+      </div>
+      <div class="help-section">
+        <h3>💾 Backup & Portability</h3>
+        <p>All data is automatically saved locally in your browser. Use <strong>Export Plan (JSON)</strong> to save a backup copy of your configuration externally.</p>
+      </div>
+    `;
+  } else {
+    helpContent.innerHTML = `
+      <div class="help-section">
+        <h3>🎯 Cible Annuelle</h3>
+        <p>Définissez vos heures cibles annuelles (ex: 1868h) dans la section <strong>Configuration & Paramètres</strong>. Elle sert de référence de capacité à 100% pour vos graphiques.</p>
+      </div>
+      <div class="help-section">
+        <h3>📚 Multiplicateurs de Préparation</h3>
+        <p>Les cours d'enseignement multiplient automatiquement vos heures brutes selon le niveau (APS, BA, PG) pour refléter le temps de préparation et de correction.</p>
+      </div>
+      <div class="help-section">
+        <h3>➕ Ajouter des Activités</h3>
+        <p>Cliquez sur <strong>Ajouter</strong> sous « Entrées Planifiées » pour enregistrer des cours, projets de recherche ou tâches administratives, et définissez leur période.</p>
+      </div>
+      <div class="help-section">
+        <h3>📊 Graphique Interactif</h3>
+        <p>Survolez les colonnes du graphique mensuel pour inspecter la répartition détaillée de votre charge de travail et identifier les mois de surcharge (marqués d'un <strong>!</strong>).</p>
+      </div>
+      <div class="help-section">
+        <h3>💾 Sauvegarde & Export</h3>
+        <p>Toutes les données sont conservées localement dans votre navigateur. Utilisez <strong>Exporter le Plan (JSON)</strong> pour créer une sauvegarde externe de vos données.</p>
+      </div>
+    `;
+  }
 }
 
 // Theme applier
@@ -1690,6 +1748,33 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("importModalCloseBtn").addEventListener("click", () => {
     document.getElementById("importModal").classList.add("hide");
   });
+
+  // Help Modal handlers
+  const helpBtn = document.getElementById("helpBtn");
+  const helpModal = document.getElementById("helpModal");
+  const helpModalCloseBtn = document.getElementById("helpModalCloseBtn");
+
+  if (helpBtn && helpModal && helpModalCloseBtn) {
+    helpBtn.addEventListener("click", () => {
+      renderHelpContent();
+      helpModal.classList.remove("hide");
+    });
+    helpModalCloseBtn.addEventListener("click", () => {
+      helpModal.classList.add("hide");
+    });
+    helpModal.addEventListener("click", (e) => {
+      if (e.target === helpModal) {
+        helpModal.classList.add("hide");
+      }
+    });
+  }
+
+  // Remove help button pulse after 5 seconds to stay discreet
+  setTimeout(() => {
+    if (helpBtn) {
+      helpBtn.classList.remove("help-pulse");
+    }
+  }, 5000);
 
   setupImportDragDrop();
   setupResetWorkflow();

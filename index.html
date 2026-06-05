@@ -46,6 +46,16 @@
       </div>
 
       <div class="header-controls">
+        <!-- Help Button -->
+        <button id="helpBtn" class="btn btn-help help-pulse" aria-label="Open help tips">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span data-i18n="help_btn">Aide</span>
+        </button>
+
         <!-- Theme Selector Dropdown -->
         <div class="select-wrapper">
           <label for="themeSelect" class="sr-only">Thème</label>
@@ -516,6 +526,27 @@
 
         <div id="importError" class="danger-toast hide" data-i18n="toast_import_error">Fichier JSON invalide.
           Assurez-vous que le fichier provient de AetherHours.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HELP MODAL -->
+  <div id="helpModal" class="modal-overlay hide">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h2 id="helpModalTitle" data-i18n="help_title">Aide & Conseils</h2>
+        <button id="helpModalCloseBtn" class="modal-close-btn" aria-label="Close modal">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body help-body">
+        <div id="helpContent">
+          <!-- Populated dynamically via app.js -->
+        </div>
       </div>
     </div>
   </div>
