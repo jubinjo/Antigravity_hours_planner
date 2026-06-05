@@ -1,5 +1,7 @@
 # AetherHours — Planificateur de Charge de Travail Académique
 
+Developed with **Antigravity** (an advanced agentic AI coding assistant by Google DeepMind).
+
 AetherHours is a premium, reactive, and highly aesthetic workload planning engine designed specifically for academic faculty, researchers, and administrators. It helps users orchestrate, track, and balance academic course preparation hours, research grants, and administrative tasks across the academic year.
 
 Built with a stunning glassmorphic interface, AetherHours operates in a **zero-trust, browser-local architecture**, keeping 100% of your data privately inside your browser.
